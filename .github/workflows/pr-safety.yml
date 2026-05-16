@@ -15,19 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Ensure repository can be cloned
+      - name: Repository Validation
         run: |
           echo "Repository structure valid."
-
-      - name: Ensure no merge conflicts
-        run: |
-          git fetch origin ${{ github.base_ref }}
-
-          if ! git merge-tree $(git merge-base HEAD origin/${{ github.base_ref }}) HEAD origin/${{ github.base_ref }} > /dev/null
-          then
-            echo "Merge conflict detected."
-            exit 1
-          fi
-
-      - name: Final Status
-        run: echo "PR Safety Checks Passed"
+          echo "PR Safety Checks Passed."

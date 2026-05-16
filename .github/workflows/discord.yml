@@ -1,0 +1,30 @@
+name: Discord Notifications
+
+on:
+  pull_request:
+    types: [opened, closed]
+
+  issues:
+    types: [opened]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord Notification
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            🚀 Repository Update
+
+            Event: ${{ github.event_name }}
+
+            Title: ${{ github.event.pull_request.title || github.event.issue.title }}
+
+            Author: ${{ github.actor }}
+
+            Link:
+            ${{ github.event.pull_request.html_url || github.event.issue.html_url }}

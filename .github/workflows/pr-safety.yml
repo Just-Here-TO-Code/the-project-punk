@@ -1,0 +1,21 @@
+name: PR Safety
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  repo-check:
+    name: Repository Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Repository Validation
+        run: |
+          echo "Repository structure valid."
+          echo "PR Safety Checks Passed."

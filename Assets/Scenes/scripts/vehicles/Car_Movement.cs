@@ -36,13 +36,13 @@ public class Car_Movement : MonoBehaviour
             bool isMove = Keyboard.current.wKey.isPressed || Keyboard.current.sKey.isPressed;
             if (isMove)
             {
-                if (Keyboard.current.spaceKey.isPressed)
+                if (Keyboard.current.shiftKey.isPressed)
                 {
                     a += acclrtn*Time.deltaTime;
                 }
-                else if (Keyboard.current.shiftKey.isPressed)
+                else if (Keyboard.current.spaceKey.isPressed)
                 {
-                    a -= (acclrtn*1.5f)*Time.deltaTime;
+                    a -= (acclrtn*1.2f)*Time.deltaTime;
                 }
                 if (Keyboard.current.wKey.isPressed)
                 {
@@ -55,7 +55,7 @@ public class Car_Movement : MonoBehaviour
             }
             else
             {
-                a -= (acclrtn*2.0f)*Time.deltaTime;
+                a -= (acclrtn*1.5f)*Time.deltaTime;
             }
             a = Mathf.Clamp(a,0,5);
             speed = Mathf.Clamp(speed,20,50);
@@ -73,7 +73,7 @@ public class Car_Movement : MonoBehaviour
             }
 
             bool isTurning = Keyboard.current.dKey.isPressed || Keyboard.current.aKey.isPressed;
-            if (isTurning)
+            if (isTurning && a>0)
             {
                 rA += rtnlAcclrtn*Time.deltaTime;
                 rA = Mathf.Clamp(rA,1,5);

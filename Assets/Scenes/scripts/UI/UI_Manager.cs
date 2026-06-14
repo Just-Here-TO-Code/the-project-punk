@@ -7,9 +7,11 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera playerVcam;
     [SerializeField] CinemachineVirtualCamera vehicleTPPVcam;
     [SerializeField] GameObject playerMesh;
+    [SerializeField] GameObject vehicleMesh;
     [SerializeField] GameObject button;
     private bool isEnter;
     public bool isInside;
+    private Vector3 vhclCoords;
 
     private void Update()
     {
@@ -40,7 +42,9 @@ public class UI_Manager : MonoBehaviour
             vehicleTPPVcam.Priority = 10;
             if(playerMesh != null)
             {
+                vhclCoords = vehicleMesh.transform.position;
                 playerMesh.SetActive(true);
+                playerMesh.transform.position = new Vector3(vhclCoords.x+5,0.08f,vhclCoords.z); //<---------- gotta fix this 
             }
         }
     }

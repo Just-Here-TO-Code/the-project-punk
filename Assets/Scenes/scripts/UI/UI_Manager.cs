@@ -9,57 +9,66 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject playerMesh;
     [SerializeField] GameObject vehicleMesh;
     [SerializeField] GameObject button;
+
+    [SerializeField] int playerCamPrty;
+    [SerializeField] int vhclCamPrty;
+    [SerializeField] Car_Movement vhclMvmnt;
     private bool isEnter;
     public bool isInside;
     private Vector3 vhclCoords;
 
     private void Update()
     {
-        if (isEnter && !isInside && Keyboard.current.fKey.wasPressedThisFrame)
+        if(vhclMvmnt != null && vhclMvmnt.spdMtr == 0)
         {
-            // ----- Debug ----- //
-            Debug.Log("Entered!!");
-
-            isInside = true;
-
-            playerVcam.Priority = 10;
-            vehicleTPPVcam.Priority = 20;
-            if(playerMesh != null)
+            if (isEnter && !isInside && Keyboard.current.fKey.wasPressedThisFrame)
             {
-                playerMesh.SetActive(false);
+                // ----- Debug ----- //
+                Debug.Log("Entered!!");
+
+                isInside = true;
+                isEnter = false;
+
+                playerVcam.Priority = vhclCamPrty;
+                vehicleTPPVcam.Priority = playerCamPrty;
+                if(playerMesh != null)
+                {
+                    playerMesh.SetActive(false);
+                }
+
+                button.SetActive(false);
             }
-
-            button.SetActive(false);
-        }
-        else if (isInside && Keyboard.current.fKey.wasPressedThisFrame)
-        {
-            // ----- Debug ----- //
-            Debug.Log("Exit");
-
-            isInside = false;
-
-            playerVcam.Priority = 20;
-            vehicleTPPVcam.Priority = 10;
-            if(playerMesh != null)
+            if (!isEnter && isInside && Keyboard.current.rKey.wasPressedThisFrame)
             {
+                // ----- Debug ----- //
+                Debug.Log("Exit");
+
+                isInside = false;
+                vehicleTPPVcam.Priority = vhclCamPrty;
+
+                playerVcam.Priority = playerCamPrty;
                 vhclCoords = vehicleMesh.transform.position;
-                playerMesh.SetActive(true);
-                playerMesh.transform.position = new Vector3(vhclCoords.x+5,0.08f,vhclCoords.z); //<---------- gotta fix this 
+
+                if(playerMesh != null)
+                {
+                    playerMesh.SetActive(true);
+                    playerMesh.transform.position = new Vector3(vhclCoords.x+2,0.08f,vhclCoords.z+1); //<---------- gotta fix this 
+                }
             }
         }
     }
 
+    // enter -----> relative to the trigger boundary(box collider)
     public void onPlayerEnter()
     {
-        if (!isInside)
-        {
-            isEnter = true;
-        }
+        isEnter = true;
+        isInside = false;
         button.SetActive(true);
     }
     public void onPlayerExit()
     {
         isEnter = false;
+        isInside = false;
         button.SetActive(false);
     }
 }

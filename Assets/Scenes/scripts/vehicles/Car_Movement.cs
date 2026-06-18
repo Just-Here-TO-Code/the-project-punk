@@ -9,100 +9,117 @@ public class Car_Movement : MonoBehaviour
     private bool isFrwd = true;
 
     [Header("Movement")]
-    public float speed = 10.0f;
-    public float acclrtn = 0.1f;
-    public float rtnlSpd = 10.0f;
-    public float rtnlAcclrtn = 0.1f;
-    private float a = 0.0f;
-    private float rA = 1.0f;
+    public float thrstForce;
+    public float brkForce;
+    public float acclrtn;
+    public float turnTrq;
+    public float spdMtr = 0.0f;
+
+    // keys bindings
+    private bool isW;
+    private bool isS;
+    private bool isA;
+    private bool isD;
+    private bool isShift;
+    private bool isSpace;
+
+    private Rigidbody rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+        // liner and rotational drag
+        rb.linearDamping = 2.0f;
+        rb.angularDamping = 2.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        isDrive = UI_Manager.isInside;
+        spdMtr = rb.linearVelocity.magnitude*3.6f; // < ----- speedoMeter;
+        proccessInput();
+    }
+
+    // fixed physics loop at default 50fps for physics calculations to avoid issues like teleportation while lagging asn stuff (` ^ `)
+    private void FixedUpdate()
+    {
         processMovement();
+    }
+
+    private void proccessInput()
+    {
+        // linear
+        isShift = Keyboard.current.shiftKey.isPressed;
+        isSpace = Keyboard.current.spaceKey.isPressed;
+        isW = Keyboard.current.wKey.isPressed;
+        isS = Keyboard.current.sKey.isPressed;
+
+        // turns
+        isA = Keyboard.current.aKey.isPressed;
+        isD = Keyboard.current.dKey.isPressed;
     }
 
     private void processMovement()
     {
-        isDrive = UI_Manager.isInside;
         if (isDrive)
         {
             Transform vhclTrnsfm = transform;
-            bool isMove = Keyboard.current.wKey.isPressed || Keyboard.current.sKey.isPressed;
+            // speed dir -> momentum
+            float frwdSpd = Vector3.Dot(rb.linearVelocity,vhclTrnsfm.forward);
+            bool isMove = isW || isS;
             if (isMove)
             {
-                if (Keyboard.current.shiftKey.isPressed)
+                float currThrst = thrstForce;
+                if (isShift)
                 {
-                    a += acclrtn*Time.deltaTime;
+                    currThrst *= acclrtn;
                 }
-                else if (Keyboard.current.spaceKey.isPressed)
+                else if (isSpace)
                 {
-                    a -= (acclrtn*1.2f)*Time.deltaTime;
+                    rb.AddForce(-1*rb.linearVelocity.normalized*brkForce,ForceMode.Acceleration);
                 }
-                if (Keyboard.current.wKey.isPressed)
+                if (isW)
                 {
-                    isFrwd = true;
+                    rb.AddRelativeForce(Vector3.forward*currThrst,ForceMode.Acceleration);
                 }
-                if (Keyboard.current.sKey.isPressed)
+                if (isS)
                 {
-                    isFrwd = false;
+                    rb.AddRelativeForce(Vector3.back*(currThrst/2),ForceMode.Acceleration);
                 }
             }
-            else
-            {
-                a -= (acclrtn*1.5f)*Time.deltaTime;
-            }
-            a = Mathf.Clamp(a,0,5);
-            speed = Mathf.Clamp(speed,20,50);
+            isFrwd = frwdSpd >=0;
 
-            if(a > 0)
+            bool isTurning = isD || isA;
+            if (isTurning && rb.linearVelocity.sqrMagnitude > 0.01f)
             {
-                if (isFrwd)
-                {
-                    vhclTrnsfm.position += a*vhclTrnsfm.forward*speed*Time.deltaTime;
-                }
-                else
-                {
-                    vhclTrnsfm.position += -1*a*vhclTrnsfm.forward*speed/2*Time.deltaTime;
-                }
-            }
-
-            bool isTurning = Keyboard.current.dKey.isPressed || Keyboard.current.aKey.isPressed;
-            if (isTurning && a>0)
-            {
-                rA += rtnlAcclrtn*Time.deltaTime;
-                rA = Mathf.Clamp(rA,1,5);
-                if (Keyboard.current.dKey.isPressed)
+                // ----- Debug ----- //
+                // Debug.Log("Turning!!");
+                Debug.Log(rb.angularVelocity);
+                if (isD)
                 {
                     if (isFrwd)
                     {
-                        vhclTrnsfm.Rotate(0.0f,rA*rtnlSpd*Time.deltaTime,0.0f);
+                        rb.AddRelativeTorque(Vector3.up*turnTrq,ForceMode.Acceleration);
                     }
                     else
                     {
-                        vhclTrnsfm.Rotate(0.0f,-1*rA*rtnlSpd*Time.deltaTime,0.0f);
+                        rb.AddRelativeTorque(-1*Vector3.up*turnTrq,ForceMode.Acceleration);
                     }
                 }
-                else if (Keyboard.current.aKey.isPressed)
+                else if (isA)
                 {
                     if (isFrwd)
                     {
-                        vhclTrnsfm.Rotate(0.0f,-1*rA*rtnlSpd*Time.deltaTime,0.0f);
+                        rb.AddRelativeTorque(-1*Vector3.up*turnTrq,ForceMode.Acceleration);
                     }
                     else
                     {
-                        vhclTrnsfm.Rotate(0.0f,rA*rtnlSpd*Time.deltaTime,0.0f);
+                        rb.AddRelativeTorque(Vector3.up*turnTrq,ForceMode.Acceleration);
                     }
                 }
-            }
-            else
-            {
-                rA = 1.0f;
             }
         }
     }

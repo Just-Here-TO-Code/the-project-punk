@@ -8098,6 +8098,9 @@ MonoBehaviour:
   playerMesh: {fileID: 974238578490744772}
   vehicleMesh: {fileID: 1105398385}
   button: {fileID: 31339293}
+  playerCamPrty: 20
+  vhclCamPrty: 15
+  vhclMvmnt: {fileID: 1105398390}
   isInside: 0
 --- !u!1 &539608151
 GameObject:
@@ -8376,6 +8379,9 @@ MonoBehaviour:
   playerMesh: {fileID: 974238578490744772}
   vehicleMesh: {fileID: 4411393040996698195}
   button: {fileID: 31339293}
+  playerCamPrty: 20
+  vhclCamPrty: 10
+  vhclMvmnt: {fileID: 4411393040996698197}
   isInside: 0
 --- !u!1 &553527963
 GameObject:
@@ -14078,6 +14084,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3547371035347159303, guid: 2ae94237862b0d8449b4d0de3073940d, type: 3}
   m_PrefabInstance: {fileID: 426381288}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &958978035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 958978036}
+  m_Layer: 0
+  m_Name: bmp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &958978036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958978035}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1105398386}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &960207386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17739,6 +17776,7 @@ GameObject:
   - component: {fileID: 1105398389}
   - component: {fileID: 1105398388}
   - component: {fileID: 1105398390}
+  - component: {fileID: 1105398391}
   m_Layer: 0
   m_Name: car_v1
   m_TagString: Car
@@ -17755,11 +17793,12 @@ Transform:
   m_GameObject: {fileID: 1105398385}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.76, y: -0.1, z: 1.93}
+  m_LocalPosition: {x: -3.76, y: -0.1, z: 14.6}
   m_LocalScale: {x: 0.015, y: 0.015, z: 0.015}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5080678563593499383}
+  - {fileID: 958978036}
   m_Father: {fileID: 1656470610}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &1105398388
@@ -17794,8 +17833,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 186.2267, y: 74.14827, z: 319.1649}
-  m_Center: {x: -2.0545483, y: -2.1367314, z: 39.187572}
+  m_Size: {x: 186.2267, y: 72.99464, z: 319.16486}
+  m_Center: {x: -2.0545483, y: -1.5596907, z: 39.187572}
 --- !u!114 &1105398390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17809,10 +17848,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Car_Movement
   UI_Manager: {fileID: 522655711}
-  speed: 20
-  acclrtn: 1
-  rtnlSpd: 50
-  rtnlAcclrtn: 1
+  thrstForce: 50
+  brkForce: 50
+  acclrtn: 4
+  turnTrq: 400
+  spdMtr: 0
+--- !u!54 &1105398391
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105398385}
+  serializedVersion: 5
+  m_Mass: 10
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &1105469178
 GameObject:
   m_ObjectHideFlags: 0
@@ -18731,7 +18798,7 @@ Transform:
   m_GameObject: {fileID: 1170215116}
   serializedVersion: 2
   m_LocalRotation: {x: 0.28033936, y: -0.66312224, z: 0.29617825, w: 0.6276601}
-  m_LocalPosition: {x: -7.866333, y: 2.529189, z: 1.8820038}
+  m_LocalPosition: {x: -7.866333, y: 2.529189, z: 14.552002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32816,7 +32883,7 @@ Transform:
   m_GameObject: {fileID: 974238578490744772}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 181.22003, y: 0.07999998, z: -404.05}
+  m_LocalPosition: {x: 181.22003, y: 0.07999998, z: -392}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -34989,7 +35056,7 @@ Transform:
   m_GameObject: {fileID: 3203261901819137043}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 177.22003, y: 1.4549999, z: -404.25}
+  m_LocalPosition: {x: 177.22003, y: 1.4549999, z: -392.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36216,6 +36283,7 @@ GameObject:
   - component: {fileID: 4411393040996698197}
   - component: {fileID: 4411393040996698196}
   - component: {fileID: 4411393040996698198}
+  - component: {fileID: 4411393040996698199}
   m_Layer: 0
   m_Name: bike_v1
   m_TagString: Untagged
@@ -36249,10 +36317,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Car_Movement
   UI_Manager: {fileID: 546346722}
-  speed: 20
+  thrstForce: 10
+  brkForce: 0
   acclrtn: 1
-  rtnlSpd: 50
-  rtnlAcclrtn: 1
+  turnTrq: 10
+  spdMtr: 0
 --- !u!65 &4411393040996698198
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36274,6 +36343,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9247077, y: 1.1981477, z: 3.2747157}
   m_Center: {x: -0.00000014901164, y: 0.5740902, z: -0.02485252}
+--- !u!54 &4411393040996698199
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4411393040996698195}
+  serializedVersion: 5
+  m_Mass: 5
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4414109000241602951
 GameObject:
   m_ObjectHideFlags: 0
@@ -37120,7 +37216,7 @@ Transform:
   m_GameObject: {fileID: 5542111181001385670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 177.22003, y: 1.4549999, z: -404.25}
+  m_LocalPosition: {x: 177.22003, y: 1.4549999, z: -392.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37307,8 +37403,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 123.72303, y: 91.370094, z: 296.4314}
-  m_Center: {x: 1.9989487, y: -4.314956, z: 36.784172}
+  m_Size: {x: 123.72303, y: 91.923164, z: 296.4314}
+  m_Center: {x: 1.9989489, y: -4.5912666, z: 36.784172}
 --- !u!1 &5607017233300627410
 GameObject:
   m_ObjectHideFlags: 0

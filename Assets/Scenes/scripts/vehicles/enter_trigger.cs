@@ -16,8 +16,11 @@ public class enter_trigger : MonoBehaviour
     }
 
     private void OnTriggerExit(Collider other) {
-        setUIinActive();
-        UI_Manager.onPlayerExit();
+        if(other.CompareTag("Player"))
+        {
+            setUIinActive();
+            UI_Manager.onPlayerExit();
+        }
     }
 
     private void setUIActive()
